@@ -15,7 +15,7 @@ ui <- list(
     skin = "blue",
     ### Create the app header ----
     dashboardHeader(
-      title = "App Template", # You may use a shortened form of the title here
+      title = "Diff-In-Diff", # You may use a shortened form of the title here
       titleWidth = 250,
       tags$li(class = "dropdown", actionLink("info", icon("info"))),
       tags$li(
