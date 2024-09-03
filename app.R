@@ -15,12 +15,12 @@ ui <- list(
     skin = "blue",
     ### Create the app header ----
     dashboardHeader(
-      title = "Diff-In-Diff", # You may use a shortened form of the title here
+      title = "Diff In Diff", # You may use a shortened form of the title here
       titleWidth = 250,
       tags$li(class = "dropdown", actionLink("info", icon("info"))),
       tags$li(
         class = "dropdown",
-        boastUtils::surveyLink(name = "App_Template")
+        boastUtils::surveyLink(name = "Diff_In_Diff")
       ),
       tags$li(
         class = "dropdown",
