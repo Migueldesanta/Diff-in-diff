@@ -54,18 +54,16 @@ ui <- list(
         tabItem(
           tabName = "overview",
           withMathJax(),
-          h1("Sample Application for BOAST Apps"), # This should be the full name.
-          p("This is a sample Shiny application for BOAST. Remember, this page
-            will act like the front page (home page) of your app. Thus you will
-            want to have this page catch attention and describe (in general terms)
-            what the user can do in the rest of the app."),
+          h1("Difference in Difference Regression(Diff-in-Diff)"),
+          p("This app is designed to help students explore and understand the core concepts, 
+            assumptions, and interpretations of DID regression 
+            by experimenting with real data and simulation."),
           h2("Instructions"),
           p("This information will change depending on what you want to do."),
           tags$ol(
             tags$li("Review any prerequiste ideas using the Prerequistes tab."),
-            tags$li("Explore the Exploration Tab."),
-            tags$li("Challenge yourself."),
-            tags$li("Play the game to test how far you've come.")
+            tags$li("Explore the assumptions by the Exploration 1 Tab."),
+            tags$li("Explore the interpretations by the Exploration 2 Tab.")
           ),
           ##### Go Button--location will depend on your goals
           div(
@@ -83,11 +81,7 @@ ui <- list(
           br(),
           h2("Acknowledgements"),
           p(
-            "This version of the app was developed and coded by Neil J.
-            Hatfield  and Robert P. Carey, III.",
-            br(),
-            "We would like to extend a special thanks to the Shiny Program
-            Students.",
+            "This version of the app was developed and coded by Xin(Michael) Yun(2024)",
             br(),
             br(),
             "Cite this app as:",
@@ -95,7 +89,7 @@ ui <- list(
             citeApp(),
             br(),
             br(),
-            div(class = "updated", "Last Update: 11/8/2022 by NJH.")
+            div(class = "updated", "Last Update: 09/08/2022 by XY.")
           )
         ),
         #### Set up the Prerequisites Page ----
@@ -103,8 +97,14 @@ ui <- list(
           tabName = "prerequisites",
           withMathJax(),
           h2("Prerequisites"),
-          p("In order to get the most out of this app, please review the
-            following:"),
+          p('What is Diff-in-Diff Regression? Diff-in-Diff (',
+            a(href = 'https://www.publichealth.columbia.edu/research/
+              population-health-methods/difference-difference-estimation', 
+              'Difference-in-Difference', class = 'bodylinks'), ') 
+            Regression is  a statistical method used to estimate causal effects 
+            by comparing changes in outcomes over time between a treatment group 
+            and a control group, accounting for biases from time-invariant differences between the groups.'),
+          
           tags$ul(
             tags$li("Pre-req 1--Technical/Conceptual Prerequisites are ideas that
                     users need to have in order to engage with your app fully."),
@@ -116,23 +116,32 @@ ui <- list(
           ),
           p("Notice the use of an unordered list; users can move through the
             list any way they wish."),
-          box(
-            title = strong("Null Hypothesis Significance Tests (NHSTs)"),
-            status = "primary",
-            collapsible = TRUE,
-            collapsed = TRUE,
-            width = '100%',
-            "In the Confirmatory Data Analysis tradition, null hypothesis
-            significance tests serve as a critical tool to confirm that a
-            particular theoretical model describes our data and to make a
-            generalization from our sample to the broader population
-            (i.e., make an inference). The null hypothesis often reflects the
-            simpler of two models (e.g., 'no statistical difference',
-            'there is an additive difference of 1', etc.) that we will use to
-            build a sampling distribution for our chosen estimator. These
-            methods let us test whether our sample data are consistent with this
-            simple model (null hypothesis)."
+          tags$tbody(
+  tags$tr(
+    tags$td(tags$strong("Aspect")),
+    tags$td(tags$strong("Definition")),
+    tags$td("Statistical association between variables."),
+    tags$td("One variable causes changes in another.")
+  ),
+  tags$tr(
+    tags$td(tags$strong("Relationship")),
+    tags$td("Variables covary but without a direct link."),
+    tags$td("Direct cause-and-effect relationship between variables.")
+  ),
+  tags$tr(
+    tags$td(tags$strong("Third Variable Problem")),
+    tags$td("Can be influenced by confounding variables."),
+    tags$td("Accounts for third variables in controlled experiments.")
+  ),
+  tags$tr(
+    tags$td(tags$strong("Example")),
+    tags$td("Ice cream sales and crime rates are correlated, but unrelated."),
+    tags$td("A new policy reduces unemployment rates.")
+  )
+)
+            )
           ),
+          
           box(
             title = strong(tags$em("p"), "-values"),
             status = "primary",
@@ -153,9 +162,9 @@ ui <- list(
         #### Note: you must have at least one of the following pages. You might
         #### have more than one type and/or more than one of the same type. This
         #### will be up to you and the goals for your app.
-        #### Set up an Explore Page ----
+        #### Set up an Explore 1 Page ----
         tabItem(
-          tabName = "explore",
+          tabName = "explore1",
           withMathJax(),
           h2("Explore the Concept"),
           p("This page should include something for the user to do, the more
@@ -165,9 +174,9 @@ ui <- list(
           p("Common elements include graphs, sliders, buttons, etc."),
           p("The following comes from the NHST Caveats App:"),
         ),
-        #### Set up a Challenge Page ----
+        #### Set up an Explore 2 Page ----
         tabItem(
-          tabName = "challenge",
+          tabName = "explore2",
           withMathJax(),
           h2("Challenge Yourself"),
           p("The general intent of a Challenge page is to have the user take
