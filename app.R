@@ -59,7 +59,7 @@ ui <- list(
             assumptions, and interpretations of DID regression 
             by experimenting with real data and simulation."),
           h2("Instructions"),
-          p("This information will change depending on what you want to do."),
+          p("Explore the app based on the following instructions:"),
           tags$ol(
             tags$li("Review any prerequiste ideas using the Prerequistes tab."),
             tags$li("Explore the assumptions by the Exploration 1 Tab."),
@@ -98,8 +98,7 @@ ui <- list(
           withMathJax(),
           h2("Prerequisites"),
           p('What is Diff-in-Diff Regression? Diff-in-Diff (',
-            a(href = 'https://www.publichealth.columbia.edu/research/
-              population-health-methods/difference-difference-estimation', 
+            a(href = 'https://www.publichealth.columbia.edu/research/population-health-methods/difference-difference-estimation', 
               'Difference-in-Difference', class = 'bodylinks'), ') 
             Regression is  a statistical method used to estimate causal effects 
             by comparing changes in outcomes over time between a treatment group 
@@ -116,47 +115,111 @@ ui <- list(
           ),
           p("Notice the use of an unordered list; users can move through the
             list any way they wish."),
-          tags$tbody(
-  tags$tr(
-    tags$td(tags$strong("Aspect")),
-    tags$td(tags$strong("Definition")),
-    tags$td("Statistical association between variables."),
-    tags$td("One variable causes changes in another.")
-  ),
-  tags$tr(
-    tags$td(tags$strong("Relationship")),
-    tags$td("Variables covary but without a direct link."),
-    tags$td("Direct cause-and-effect relationship between variables.")
-  ),
-  tags$tr(
-    tags$td(tags$strong("Third Variable Problem")),
-    tags$td("Can be influenced by confounding variables."),
-    tags$td("Accounts for third variables in controlled experiments.")
-  ),
-  tags$tr(
-    tags$td(tags$strong("Example")),
-    tags$td("Ice cream sales and crime rates are correlated, but unrelated."),
-    tags$td("A new policy reduces unemployment rates.")
-  )
-)
+          box(
+            title = strong(
+               
+              a(href = 'https://www.scribbr.com/methodology/correlation-vs-causation/', 
+                'Correlation vs. Causation', class = 'bodylinks')
+            ),
+            status = "primary",
+            collapsible = TRUE,
+            collapsed = TRUE,
+            width = '100%',
+            
+            tags$style(HTML("
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+    }
+  ")),
+            
+            tags$table(
+              tags$thead(
+                tags$tr(
+                  tags$th(scope = "col", "Aspect"),
+                  tags$th(scope = "col", "Correlation"),
+                  tags$th(scope = "col", "Causation")
+                )
+              ),
+              tags$tbody(
+                tags$tr(
+                  tags$td("Definition"),
+                  tags$td("Statistical association between variables."),
+                  tags$td("One variable causes changes in another.")
+                ),
+                tags$tr(
+                  tags$td("Relationship"),
+                  tags$td("Variables covary but without a direct link."),
+                  tags$td("Direct cause-and-effect relationship between variables.")
+                ),
+                tags$tr(
+                  tags$td("Third Variable Problem"),
+                  tags$td("Can be influenced by confounding variables."),
+                  tags$td("Accounts for third variables in controlled experiments.")
+                ),
+                tags$tr(
+                  tags$td("Example"),
+                  tags$td("Ice cream sales and crime rates are correlated, but unrelated."),
+                  tags$td("A new policy reduces unemployment rates.")
+                )
+              )
             )
           ),
           
           box(
-            title = strong(tags$em("p"), "-values"),
+            title = strong("Difference-in-Difference Assumptions"),
             status = "primary",
             collapsible = TRUE,
-            collapsed = FALSE,
+            collapsed = TRUE,
             width = '100%',
-            "The probability that our selected estimator takes on a value at
-            least as extreme as what we observed given our null hypothesis. If
-            we were to carry out our study infinitely many times and the null
-            hypothesis accurately modeled what we're studying, then we would
-            expect for our estimator to produce a value at least as extreme as
-            what we have seen 100*(p-value)% of the time. The larger the
-            p-value, the more often we would expect our estimator to take on a
-            value at least as extreme as what we've seen; the smaller, the less
-            often."
+            
+            tags$style(HTML("
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+    }
+  ")),
+            
+            tags$table(
+              tags$thead(
+                tags$tr(
+                  tags$th(scope = "col", "Assumption"),
+                  tags$th(scope = "col", "Description")
+                )
+              ),
+              tags$tbody(
+                tags$tr(
+                  tags$td("Exchangeability"),
+                  tags$td("No systematic differences between treatment and control groups that would affect outcomes.")
+                ),
+                tags$tr(
+                  tags$td("Positivity"),
+                  tags$td("All units have a non-zero probability of receiving the treatment.")
+                ),
+                tags$tr(
+                  tags$td("SUTVA"),
+                  tags$td("No spillover effects; treatment of one unit doesn’t affect another.")
+                ),
+                tags$tr(
+                  tags$td("Parallel Trends"),
+                  tags$td("In the absence of treatment, outcome trends for both groups are the same over time.")
+                ),
+                tags$tr(
+                  tags$td("Stable Composition"),
+                  tags$td("Group composition must remain stable in repeated cross-sectional designs.")
+                )
+              )
+            )
           )
         ),
         #### Note: you must have at least one of the following pages. You might
