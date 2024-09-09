@@ -81,7 +81,7 @@ ui <- list(
           br(),
           h2("Acknowledgements"),
           p(
-            "This version of the app was developed and coded by Xin(Michael) Yun(2024)",
+            "This version of the app was developed and coded by Xin(Michael) Yun(2024).",
             br(),
             br(),
             "Cite this app as:",
@@ -108,11 +108,22 @@ ui <- list(
           p('DID is usually implemented as an interaction term between time and 
             treatment group dummy variables in a regression model:'),
           p('Y= β0 + β1*[Time] + β2*[Intervention] + β3*[Time*Intervention] + β4*[Covariates]+ε'),
+          
+          tags$figure(
+            align = "center",
+            tags$img(
+              src = "model.jpg",
+              width = 500,
+              alt = "Diff-in-Diff Model"
+            ),
+            tags$figcaption("Diff-in-Diff Model (Columbia University)")
+          ),
           br(),
+          
           box(
             title = strong(
                
-              a(href = 'https://www.scribbr.com/methodology/correlation-vs-causation/', 
+              a(href = 'https://www.jstor.org/stable/43551404', 
                 'Correlation vs. Causation', class = 'bodylinks')
             ),
             status = "primary",
@@ -166,7 +177,7 @@ ui <- list(
           ),
           
           box(
-            title = strong("Difference-in-Difference Assumptions"),
+            title = strong("Assumptions"),
             status = "primary",
             collapsible = TRUE,
             collapsed = TRUE,
@@ -268,13 +279,24 @@ ui <- list(
           tabName = "references",
           withMathJax(),
           h2("References"),
-          p("You'll need to fill in this page with all of the appropriate
-            references for your app."),
           p(
             class = "hangingindent",
             "Bailey, E. (2015). shinyBS: Twitter bootstrap components for shiny.
             (v0.61). [R package]. Available from
             https://CRAN.R-project.org/package=shinyBS"
+          ),
+          p(
+            class = "hangingindent",
+            "Barrowman, N. (2014). Correlation, Causation, and Confusion. 
+            The New Atlantis, 43, 23–44. 
+            http://www.jstor.org/stable/43551404"
+          ),
+          p(
+            class = "hangingindent",
+            "Columbia University Mailman School of Public Health. (n.d.). 
+            Difference-in-difference estimation. Columbia University. 
+            https://www.publichealth.columbia.edu/research/population-health-methods/
+            difference-difference-estimation"
           ),
           br(),
           br(),
