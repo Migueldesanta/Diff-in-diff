@@ -104,17 +104,11 @@ ui <- list(
             by comparing changes in outcomes over time between a treatment group 
             and a control group, accounting for biases from time-invariant differences between the groups.'),
           
-          tags$ul(
-            tags$li("Pre-req 1--Technical/Conceptual Prerequisites are ideas that
-                    users need to have in order to engage with your app fully."),
-            tags$li("Pre-req 2--Contextual Prerequisites refer to any information
-                    about a context in your app that will enrich a user's
-                    understandings."),
-            tags$li("Pre-req 3"),
-            tags$li("Pre-req 4")
-          ),
-          p("Notice the use of an unordered list; users can move through the
-            list any way they wish."),
+          h3('Regression Model'),
+          p('DID is usually implemented as an interaction term between time and 
+            treatment group dummy variables in a regression model:'),
+          p('Y= β0 + β1*[Time] + β2*[Intervention] + β3*[Time*Intervention] + β4*[Covariates]+ε'),
+          br(),
           box(
             title = strong(
                
