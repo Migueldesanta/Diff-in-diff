@@ -15,7 +15,7 @@ ui <- list(
     skin = "blue",
     ### Create the app header ----
     dashboardHeader(
-      title = "Diff In Diff", # You may use a shortened form of the title here
+      title = "Two-Period DID",
       titleWidth = 250,
       tags$li(class = "dropdown", actionLink("info", icon("info"))),
       tags$li(
@@ -54,9 +54,9 @@ ui <- list(
         tabItem(
           tabName = "overview",
           withMathJax(),
-          h1("Difference in Difference Regression(Diff-in-Diff)"),
+          h1("Two-Period Difference in Difference Regression(Two-Period DID)"),
           p("This app is designed to help students explore and understand the core concepts, 
-            assumptions, and interpretations of DID regression 
+            assumptions, and interpretations of Two-Period DID regression 
             by experimenting with real data and simulation."),
           h2("Instructions"),
           p("Explore the app based on the following instructions:"),
@@ -97,18 +97,33 @@ ui <- list(
           tabName = "prerequisites",
           withMathJax(),
           h2("Prerequisites"),
-          p('What is Diff-in-Diff Regression? Diff-in-Diff (',
+          p('What is Two-Period DID Regression? Two-Period DID (',
             a(href = 'https://www.publichealth.columbia.edu/research/population-health-methods/difference-difference-estimation', 
-              'Difference-in-Difference', class = 'bodylinks'), ') 
-            Regression is  a statistical method used to estimate causal effects 
-            by comparing changes in outcomes over time between a treatment group 
-            and a control group, accounting for biases from time-invariant differences between the groups.'),
+              'Two-Period Difference-in-Difference', class = 'bodylinks'), ') 
+             a statistical method used to estimate causal effects by comparing changes 
+            in outcomes between a treatment group and a control group over two time periods: 
+            before and after the intervention. It accounts for time-invariant differences 
+            between the groups and isolates the impact of the intervention by assuming that, 
+            in the absence of treatment, both groups would follow parallel trends over time. 
+            This method is particularly useful when randomization is not feasible..'),
           
           h3('Regression Model'),
           p('DID is usually implemented as an interaction term between time and 
             treatment group dummy variables in a regression model:'),
-          p('Y= β0 + β1*[Time] + β2*[Intervention] + β3*[Time*Intervention] + β4*[Covariates]+ε'),
-          
+          withMathJax(
+            p('$$Y_{it} = \\beta_0 + \\beta_1 \\cdot Post_t + \\beta_2 \\cdot Treat_i + 
+              \\beta_3 \\cdot (Post_t \\times Treat_i) + \\epsilon_{it}$$')
+          ),
+          withMathJax(
+            p('Where: 
+    $$\\begin{aligned}
+    &\\bullet \\ Y_{it} \\text{ is the outcome for individual } i \\text{ at time } t, \\\\
+    &\\bullet \\ Post_t \\text{ is a time dummy (1 if post-treatment, 0 if pre-treatment)}, \\\\
+    &\\bullet \\ Treat_i \\text{ is a group dummy (1 if in the treatment group, 0 otherwise)}, \\\\
+    &\\bullet \\ Post_t \\times Treat_i \\text{ is the interaction term measuring the treatment effect}, \\\\
+    &\\bullet \\ \\epsilon_{it} \\text{ is the error term}.
+    \\end{aligned}$$')
+          ),
           tags$figure(
             align = "center",
             tags$img(
