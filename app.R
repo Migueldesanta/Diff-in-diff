@@ -270,14 +270,14 @@ ui <- list(
             mainPanel(
               plotOutput("didPlot"),  # Display the DID plot
               
-              h4("Numerical Summary (Parameters):"),
+              h4("Parameters Summary:"),
               uiOutput("numericalTable"),  # Display the numerical summary for β0, β1, β2, β3
               
-              h4("Final DID Model (LaTeX):"),
+              h4("DID Model"),
               withMathJax(uiOutput("finalModel")),  # Render the DID model in LaTeX format
               
               h4("Assumption Check:"),
-              verbatimTextOutput("assumptionCheck")  # Display the assumption check results
+              uiOutput("assumptionCheck")  # Display the assumption check results
             )
           )
         ),
@@ -398,9 +398,9 @@ server <- function(input, output, session) {
     intervention_year <- 1964  # The year of intervention
     
     # Plot using ggplot2
-    ggplot(data, aes(x = year, y = outcome, color = group, linetype = type)) +
+    ggplot(data, aes(x = year, y = outcome, color = group)) +
       geom_line(size = 1.2) +
-      geom_vline(xintercept = intervention_year, color = "red", linetype = "solid", size = 1) +
+      geom_vline(xintercept = intervention_year, color = "red", size = 1) +
       geom_point(size = 2) +
       labs(title = "Difference-in-Difference (DID) Visualization", 
            x = "Year", 
@@ -409,7 +409,7 @@ server <- function(input, output, session) {
       
       # Customize x-axis labels to show "Pre intervention" and "Post intervention"
       scale_x_continuous(breaks = c(1959, intervention_year, 1969), 
-                         labels = c("Pre intervention", "1964", "Post intervention")) +
+                         labels = c("Pre intervention", "Intervention", "Post intervention")) +
       
       # Customize line types for control, treatment, and ideal trends
       scale_linetype_manual(values = c("Control" = "solid", "Treatment" = "solid", "Ideal" = "dashed")) +
@@ -463,7 +463,7 @@ server <- function(input, output, session) {
     )
   })
   
-  # Generate the DID model in LaTeX format ----
+  # Generate the DID model  ----
   output$finalModel <- renderUI({
     beta0 <- 8  # Control group pre-intervention mean
     beta1 <- input$trend_control  # Control group slope (Post effect)
