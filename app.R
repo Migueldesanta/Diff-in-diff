@@ -125,15 +125,6 @@ ui <- list(
     &\\bullet \\ \\epsilon_{it} \\text{ is the error term}.
     \\end{aligned}$$')
           ),
-          tags$figure(
-            align = "center",
-            tags$img(
-              src = "model.jpg",
-              width = 500,
-              alt = "Diff-in-Diff Model"
-            ),
-            tags$figcaption("Diff-in-Diff Model (Columbia University)")
-          ),
           br(),
           
           box(
@@ -400,7 +391,7 @@ server <- function(input, output, session) {
     # Plot using ggplot2
     ggplot(data, aes(x = year, y = outcome, color = group)) +
       geom_line(size = 1.2) +
-      geom_vline(xintercept = intervention_year, color = "red", size = 1) +
+      geom_vline(xintercept = intervention_year, color = "red", linetype = "solid", size = 1) +
       geom_point(size = 2) +
       labs(title = "Difference-in-Difference (DID) Visualization", 
            x = "Year", 
@@ -492,7 +483,5 @@ server <- function(input, output, session) {
   })
 }
 
-  
-
-# Run the app using boastUtils or shiny
+# Run the application using boastApp ----
 boastUtils::boastApp(ui = ui, server = server)
