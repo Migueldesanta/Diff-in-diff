@@ -353,7 +353,7 @@ server <- function(input, output, session) {
   # Set up Info button ----
   observeEvent(input$info, {
     sendSweetAlert(
-      session = session,
+      session = session,  # Make sure session is passed here
       type = "info",
       title = "Information",
       text = "This App Template will help you get started building your own app"
