@@ -5,6 +5,7 @@ library(shinyBS)
 library(shinyWidgets)
 library(boastUtils)
 library(ggplot2)
+library(DT)
 
 # Load additional dependencies and setup functions
 # source("global.R")
@@ -240,68 +241,120 @@ ui <- list(
         #### Set up an Explore 1 Page ----
         tabItem(
           tabName = "explore1",
-          withMathJax(),  # Enable LaTeX rendering for mathematical equations
-          h2("Explore the Assumptions"),
-          p("On this page, you can explore various key assumptions that underpin 
-            Two-Period Difference-in-Difference (DID) model.
-            Assumptions are critical to ensure the validity and reliability of 
-            your analysis. Violating these assumptions can lead to biased results 
-            and incorrect interpretations."),
-          p("Use the drop-down menu to select an assumption you want to explore. 
-            Based on your selection, you will be presented with interactive controls
-            and visualizations that allow you to adjust different parameters, 
-            observe their effects on the outcome, and evaluate whether the 
-            assumption holds or is violated. This page will help deepen your 
-            understanding of the assumptions and how they influence the accuracy 
-            of model estimates."),
+          withMathJax(),
           
-          # Layout for assumptions and visualization
-          sidebarLayout(
-            sidebarPanel(
-              # Drop-down to select the assumption to explore
-              selectInput(
-                inputId = 'assumptionMenu',
-                label = 'Select Assumption to Explore',
-                choices = c('Parallel Trends', 'Other Assumption')
-              ),
+          h2("Explore Assumptions"),
+          p("This page allows you to explore key assumptions of a Two-Period Difference-in-Difference (DID) model, 
+     specifically focusing on the Parallel Trends assumption. You can use the sliders to adjust the control 
+     and treatment group trend slopes before treatment, as well as the post-treatment effect. The graphs 
+     will automatically update to show how these changes influence the model's results, helping you understand 
+     whether the Parallel Trends assumption holds or is violated in different scenarios."),
+          br(),
+          
+          # Main content for exploring assumptions
+          fluidPage(
+            tabsetPanel(
+              id = "whichAssumption",
+              type = "tabs",
               
-              # Conditional panels to show sliders based on selected assumption
-              conditionalPanel(
-                condition = "input.assumptionMenu == 'Parallel Trends'",
-                sliderInput("trend_control", 
-                            "Control Group Trend Slope (Pre-Intervention):", 
-                            min = 0.5, max = 3, value = 1.5, step = 0.1),
-                sliderInput("trend_treatment", 
-                            "Treatment Group Trend Slope (Pre-Intervention):", 
-                            min = 0.5, max = 3, value = 1.5, step = 0.1),
-                sliderInput("treatment_effect", 
-                            "Treatment Effect (Post-Intervention):", 
-                            min = 0, max = 5, value = 2, step = 0.5),
-                p("Instructions:"),
-                p("Use the sliders to adjust the pre-intervention 
-                trends for the control and treatment groups. 
-                Modify the treatment effect to see how it changes 
-                the post-intervention trends. The graph will update 
-                automatically, allowing you to observe whether the Parallel 
-                Trends Assumption holds or is violated.")
+              ##### Parallel Trends Assumption ----
+              tabPanel(
+                title = "Parallel Trends",
+                br(),
+                
+                # Input column (left side) ----
+                column(
+                  width = 4,
+                  wellPanel(
+                    tags$strong("Parallel Trends Assumption"),
+                    
+                    # Sliders for trend adjustment
+                    sliderInput(
+                      inputId = "trend_control",
+                      label = "Control Group Trend Slope (Pre-Treatment):",
+                      min = 0.5,
+                      max = 3,
+                      value = 1.5,
+                      step = 0.1
+                    ),
+                    sliderInput(
+                      inputId = "trend_treatment",
+                      label = "Treatment Group Trend Slope (Pre-Treatment):",
+                      min = 0.5,
+                      max = 3,
+                      value = 1.5,
+                      step = 0.1
+                    ),
+                    sliderInput(
+                      inputId = "treatment_effect",
+                      label = "Treatment Effect (Post-Treatment):",
+                      min = 0,
+                      max = 5,
+                      value = 2,
+                      step = 0.5
+                    )
+                  )
+                ),
+                
+                # Output column (right side) ----
+                column(
+                  width = 8,
+                  plotOutput("didPlot", height = "400px"),
+                  tags$b(dataTableOutput('analysis1')),
+                  br(),
+                  uiOutput('assumptionCheck')
+                )
               ),
-              
-              conditionalPanel(
-                condition = "input.assumptionMenu == 'Other Assumption'",
-                # You can add other sliders or input elements here for different assumptions
-                p("This section can be used for exploring other assumptions.")
+              ##### Exchangeability Assumption ----
+              tabPanel(
+                title = "Exchangeability",
+                br(),
+                
+                # Input column (left side) ----
+                column(
+                  width = 4,
+                  wellPanel(
+                    tags$strong("Exchangeability Assumption"),
+                    p("This assumption requires that treatment and control groups follow the same trend before treatment. 
+         You can adjust the initial outcome differences between the groups and add a confounder to see 
+         how this affects the model."),
+                    
+                    # Slider for initial outcome differences (baseline difference)
+                    sliderInput(
+                      inputId = "initial_diff",
+                      label = "Initial Outcome Difference Between Groups (Pre-Treatment):",
+                      min = -5,
+                      max = 5,
+                      value = 0,
+                      step = 0.5
+                    ),
+                    
+                    # Slider for confounder effect (simulating trend difference)
+                    sliderInput(
+                      inputId = "confounder",
+                      label = "Impact of Confounding Variable on Treatment Group:",
+                      min = 0,
+                      max = 5,
+                      value = 0,
+                      step = 0.5
+                    )
+                  )
+                ),
+                
+                # Output column (right side) ----
+                column(
+                  width = 8,
+                  plotOutput("plotExchangeability", height = "400px"),
+                  br(),
+                  tags$b(dataTableOutput('analysis2')),
+                  br(),
+                  uiOutput("exchangeabilityCheck")
+                )
               )
-            ),
-            
-            mainPanel(
-              # Show the plot and results based on the selected assumption
-              plotOutput('didPlot'),  # Parallel Trend Assumption plot
-              tags$b(dataTableOutput('analysis1')),  # Placeholder for other analysis (if needed)
-              br(),
-              uiOutput('assumptionCheck')  # Assumption check output
             )
           )
         ),
+
         #### Set up an Explore 2 Page ----
         tabItem(
           tabName = "explore2",
@@ -462,6 +515,67 @@ server <- function(input, output, session) {
           meaning the assumption is violated.")
     }
   })
+  # --- Exchangeability Assumption Logic (New) ---
+  
+  # Generate data for Exchangeability Assumption
+  generate_exchangeability_data <- reactive({
+    years <- 1959:1969
+    intervention_year <- 1964
+    control_pre <- 8  # Baseline for control group
+    
+    # Apply user's input for initial difference and confounding effect
+    treatment_pre <- control_pre + input$initial_diff
+    confounder_effect <- input$confounder
+    
+    # Control group has constant slope
+    control_slope <- 1
+    
+    # Treatment group has an adjusted slope due to the confounder
+    treatment_slope <- 1 + confounder_effect
+    
+    # Create data for control group
+    control_values <- control_pre + control_slope * (years - min(years))
+    
+    # Create data for treatment group with bias from confounder
+    treatment_values <- treatment_pre + treatment_slope * (years - min(years))
+    
+    # Combine all data into a data frame
+    data.frame(
+      year = rep(years, 2),
+      outcome = c(control_values, treatment_values),
+      group = factor(rep(c("Control", "Treatment"), each = length(years)))
+    )
+  })
+  
+  # Plot for Exchangeability Assumption (Line Plot)
+  output$plotExchangeability <- renderPlot({
+    data <- generate_exchangeability_data()
+    
+    ggplot(data, aes(x = year, y = outcome, color = group)) +
+      geom_line(size = 1.2) +  # Using line plot to show trends
+      labs(title = "Exchangeability Assumption (Line Plot)", x = "Year", y = "Outcome") +
+      theme_minimal() +
+      scale_color_manual(values = c("Control" = "blue", "Treatment" = "red")) +
+      theme(legend.position = "bottom", legend.title = element_blank())
+  })
+  
+  # Analysis for Exchangeability Assumption
+  output$analysis2 <- renderDataTable({
+    data <- generate_exchangeability_data()
+    
+    # Display the generated data for analysis
+    datatable(data, options = list(pageLength = 5))
+  })
+  
+  # Assumption Check for Exchangeability
+  output$exchangeabilityCheck <- renderPrint({
+    if (input$confounder == 0) {
+      cat("Exchangeability Assumption holds: No systematic differences between treatment and control groups.")
+    } else {
+      cat("Exchangeability Assumption violated: Systematic differences between treatment and control groups exist.")
+    }
+  })
+  
   
 }
 
