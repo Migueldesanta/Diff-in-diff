@@ -98,23 +98,27 @@ ui <- list(
         tabItem(
           tabName = "prerequisites",
           withMathJax(),
+          
           h2("Prerequisites"),
+          
           p('What is Two-Period DID Regression? Two-Period DID (',
             a(href = 'https://www.publichealth.columbia.edu/research/population-health-methods/difference-difference-estimation', 
               'Two-Period Difference-in-Difference', class = 'bodylinks'), ') 
-             a statistical method used to estimate causal effects by comparing changes 
-            in outcomes between a treatment group and a control group over two time periods: 
-            before and after the intervention. It accounts for time-invariant differences 
-            between the groups and isolates the impact of the intervention by assuming that, 
-            in the absence of treatment, both groups would follow parallel trends over time. 
-            This method is particularly useful when randomization is not feasible..'),
+    is a statistical method used to estimate causal effects by comparing changes 
+    in outcomes between a treatment group and a control group over two time periods: 
+    before and after the intervention. It accounts for time-invariant differences 
+    between the groups and isolates the impact of the intervention by assuming that, 
+    in the absence of treatment, both groups would follow parallel trends over time. 
+    This method is particularly useful when randomization is not feasible.'),
           
           h3('Regression Model'),
+          
           p('DID is usually implemented as an interaction term between time and 
-            treatment group dummy variables in a regression model:'),
+    treatment group dummy variables in a regression model:'),
+          
           withMathJax(
             p('$$Y_{it} = \\beta_0 + \\beta_1 \\cdot Intervention_t + \\beta_2 \\cdot Treat_i + 
-    \\beta_3 \\cdot (Intervention_t \\times Treat_i) + \\epsilon_{it}$$')
+      \\beta_3 \\cdot (Intervention_t \\times Treat_i) + \\epsilon_{it}$$')
           ),
           
           withMathJax(
@@ -132,63 +136,9 @@ ui <- list(
     &\\bullet \\ \\epsilon_{it} \\text{ is the error term, capturing unobserved factors that may affect the outcome}.
     \\end{aligned}$$')
           ),
+          
           br(),
-          box(
-            title = strong(
-               
-              a(href = 'https://www.jstor.org/stable/43551404', 
-                'Correlation vs. Causation', class = 'bodylinks')
-            ),
-            status = "primary",
-            collapsible = TRUE,
-            collapsed = TRUE,
-            width = '100%',
-            
-            tags$style(HTML("
-    table {
-      border-collapse: collapse;
-      width: 100%;
-    }
-    th, td {
-      border: 1px solid black;
-      padding: 8px;
-      text-align: left;
-    }
-  ")),
-            
-            tags$table(
-              tags$thead(
-                tags$tr(
-                  tags$th(scope = "col", "Aspect"),
-                  tags$th(scope = "col", "Correlation"),
-                  tags$th(scope = "col", "Causation")
-                )
-              ),
-              tags$tbody(
-                tags$tr(
-                  tags$td("Definition"),
-                  tags$td("Statistical association between variables."),
-                  tags$td("One variable causes changes in another.")
-                ),
-                tags$tr(
-                  tags$td("Relationship"),
-                  tags$td("Variables covary but without a direct link."),
-                  tags$td("Direct cause-and-effect relationship between variables.")
-                ),
-                tags$tr(
-                  tags$td("Third Variable Problem"),
-                  tags$td("Can be influenced by confounding variables."),
-                  tags$td("Accounts for third variables in controlled experiments.")
-                ),
-                tags$tr(
-                  tags$td("Example"),
-                  tags$td("Ice cream sales and crime rates are correlated, but unrelated."),
-                  tags$td("A new policy reduces unemployment rates.")
-                )
-              )
-            )
-          ),
-          br(),
+          
           box(
             title = strong("Parallel Trends Assumption"),
             status = "primary",
@@ -205,10 +155,36 @@ ui <- list(
             p("If the assumption is violated:"),
             p("1. The Difference-in-Difference (DID) model may yield biased estimates of the treatment effect."),
             p("2. In this case, alternative approaches like using fixed effects or adding control variables may be needed to adjust for the non-parallel trends.")
+          ),
+          
+          br(),
+          
+          box(
+            title = strong("Exchangeability Assumption"),
+            status = "primary",
+            collapsible = TRUE,
+            collapsed = TRUE,
+            width = '100%',
+            p("Exchangeability refers to the assumption that there are no systematic differences 
+       between the treatment and control groups, other than the treatment itself. 
+       This means that, in the absence of treatment, the expected outcomes for both groups would have been the same."),
+            
+            p("How to Test Exchangeability:"),
+            p("Exchangeability is assumed to be satisfied through the design of the study. It is often ensured by 
+       randomization, which assigns units to treatment or control groups in a way that balances observed 
+       and unobserved factors. While it cannot be directly tested, you can compare pre-treatment 
+       characteristics between the treatment and control groups to check for balance. Statistical techniques like 
+       matching or stratification are also used to control for differences in observed covariates."),
+            
+            p("If Exchangeability is Violated:"),
+            p("If exchangeability is violated, the estimated treatment effect may be biased, as there could be confounding 
+       factors that affect both treatment assignment and the outcome. In this case, alternative approaches such as 
+       propensity score matching or instrumental variables may help control for unobserved confounders.")
           )
-        )
+        ),
+        
       
-    ,
+  
         #### Note: you must have at least one of the following pages. You might
         #### have more than one type and/or more than one of the same type. This
         #### will be up to you and the goals for your app.
