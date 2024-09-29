@@ -113,21 +113,26 @@ ui <- list(
           p('DID is usually implemented as an interaction term between time and 
             treatment group dummy variables in a regression model:'),
           withMathJax(
-            p('$$Y_{it} = \\beta_0 + \\beta_1 \\cdot Post_t + \\beta_2 \\cdot Treat_i + 
-              \\beta_3 \\cdot (Post_t \\times Treat_i) + \\epsilon_{it}$$')
+            p('$$Y_{it} = \\beta_0 + \\beta_1 \\cdot Intervention_t + \\beta_2 \\cdot Treat_i + 
+    \\beta_3 \\cdot (Intervention_t \\times Treat_i) + \\epsilon_{it}$$')
           ),
+          
           withMathJax(
             p('Where: 
     $$\\begin{aligned}
-    &\\bullet \\ Y_{it} \\text{ is the outcome for individual } i \\text{ at time } t, \\\\
-    &\\bullet \\ Post_t \\text{ is a time dummy (1 if post-treatment, 0 if pre-treatment)}, \\\\
-    &\\bullet \\ Treat_i \\text{ is a group dummy (1 if in the treatment group, 0 otherwise)}, \\\\
-    &\\bullet \\ Post_t \\times Treat_i \\text{ is the interaction term measuring the treatment effect}, \\\\
-    &\\bullet \\ \\epsilon_{it} \\text{ is the error term}.
+    &\\bullet \\ Y_{it} \\text{ is the outcome for individual } i \\text{ at time } t, \\text{ representing the dependent variable we are analyzing}. \\\\
+    &\\bullet \\ \\beta_0 \\text{ is the intercept term, representing the baseline level of the outcome for the control group before the intervention}. \\\\
+    &\\bullet \\ Intervention_t \\text{ is a dummy variable that equals 1 if the observation occurs after the intervention, and 0 if it occurs before}. \\\\
+    &\\bullet \\ \\beta_1 \\text{ is the coefficient that captures the time effect (change in the outcome due to the intervention, but only for the control group)}. \\\\
+    &\\bullet \\ Treat_i \\text{ is a group dummy variable, 1 if individual } i \\text{ is in the treatment group, and 0 if in the control group}. \\\\
+    &\\bullet \\ \\beta_2 \\text{ measures the difference in outcomes between the treatment and control groups prior to the intervention}. \\\\
+    &\\bullet \\ (Intervention_t \\times Treat_i) \\text{ is the interaction term that captures the combined effect of being in the treatment group and post-intervention}. \\\\
+    &\\bullet \\ \\beta_3 \\text{ is the coefficient of the interaction term, representing the treatment effect itself} \\\\
+    & \\ \\ \\ \\text{ — how much more (or less) the treatment group changes compared to the control group after the intervention}. \\\\
+    &\\bullet \\ \\epsilon_{it} \\text{ is the error term, capturing unobserved factors that may affect the outcome}.
     \\end{aligned}$$')
           ),
           br(),
-          
           box(
             title = strong(
                
