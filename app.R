@@ -147,14 +147,14 @@ ui <- list(
             width = '100%',
             p("The Parallel Trends Assumption ensures that, in the absence of treatment, the average difference between the treatment and control groups remains constant over time."),
             
-            p("Testing the Parallel Trends Assumption:"),
-            p("1. Visual inspection is the most common method to test the assumption. If the treatment and control groups exhibit parallel trends in the pre-intervention period, this assumption holds."),
+            p("Testing the Assumption:"),
+            p("Visual inspection is the most common method to test the assumption. If the treatment and control groups exhibit parallel trends in the pre-intervention period, this assumption holds."),
             
-            p("2. Statistical tests can also be used to formally test for differences in pre-intervention trends."),
+            p("Statistical tests can also be used to formally test for differences in pre-intervention trends."),
             
             p("If the assumption is violated:"),
-            p("1. The Difference-in-Difference (DID) model may yield biased estimates of the treatment effect."),
-            p("2. In this case, alternative approaches like using fixed effects or adding control variables may be needed to adjust for the non-parallel trends.")
+            p("The Difference-in-Difference (DID) model may yield biased estimates of the treatment effect."),
+            p("In this case, alternative approaches like using fixed effects or adding control variables may be needed to adjust for the non-parallel trends.")
           ),
           
           br(),
@@ -169,14 +169,14 @@ ui <- list(
        between the treatment and control groups, other than the treatment itself. 
        This means that, in the absence of treatment, the expected outcomes for both groups would have been the same."),
             
-            p("How to Test Exchangeability:"),
+            p("Testing the Assumption:"),
             p("Exchangeability is assumed to be satisfied through the design of the study. It is often ensured by 
        randomization, which assigns units to treatment or control groups in a way that balances observed 
        and unobserved factors. While it cannot be directly tested, you can compare pre-treatment 
        characteristics between the treatment and control groups to check for balance. Statistical techniques like 
        matching or stratification are also used to control for differences in observed covariates."),
             
-            p("If Exchangeability is Violated:"),
+            p("If the assumption is violated:"),
             p("If exchangeability is violated, the estimated treatment effect may be biased, as there could be confounding 
        factors that affect both treatment assignment and the outcome. In this case, alternative approaches such as 
        propensity score matching or instrumental variables may help control for unobserved confounders.")
