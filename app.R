@@ -188,58 +188,27 @@ ui <- list(
               )
             )
           ),
-          
+          br(),
           box(
-            title = strong("Assumptions"),
+            title = strong("Parallel Trends Assumption"),
             status = "primary",
             collapsible = TRUE,
             collapsed = TRUE,
             width = '100%',
+            p("The Parallel Trends Assumption ensures that, in the absence of treatment, the average difference between the treatment and control groups remains constant over time."),
             
-            tags$style(HTML("
-    table {
-      border-collapse: collapse;
-      width: 100%;
-    }
-    th, td {
-      border: 1px solid black;
-      padding: 8px;
-      text-align: left;
-    }
-  ")),
+            p("Testing the Parallel Trends Assumption:"),
+            p("1. Visual inspection is the most common method to test the assumption. If the treatment and control groups exhibit parallel trends in the pre-intervention period, this assumption holds."),
             
-            tags$table(
-              tags$thead(
-                tags$tr(
-                  tags$th(scope = "col", "Assumption"),
-                  tags$th(scope = "col", "Description")
-                )
-              ),
-              tags$tbody(
-                tags$tr(
-                  tags$td("Exchangeability"),
-                  tags$td("No systematic differences between treatment and control groups that would affect outcomes.")
-                ),
-                tags$tr(
-                  tags$td("Positivity"),
-                  tags$td("All units have a non-zero probability of receiving the treatment.")
-                ),
-                tags$tr(
-                  tags$td("SUTVA"),
-                  tags$td("No spillover effects; treatment of one unit doesn’t affect another.")
-                ),
-                tags$tr(
-                  tags$td("Parallel Trends"),
-                  tags$td("In the absence of treatment, outcome trends for both groups are the same over time.")
-                ),
-                tags$tr(
-                  tags$td("Stable Composition"),
-                  tags$td("Group composition must remain stable in repeated cross-sectional designs.")
-                )
-              )
-            )
+            p("2. Statistical tests can also be used to formally test for differences in pre-intervention trends."),
+            
+            p("If the assumption is violated:"),
+            p("1. The Difference-in-Difference (DID) model may yield biased estimates of the treatment effect."),
+            p("2. In this case, alternative approaches like using fixed effects or adding control variables may be needed to adjust for the non-parallel trends.")
           )
-        ),
+        )
+      
+    ,
         #### Note: you must have at least one of the following pages. You might
         #### have more than one type and/or more than one of the same type. This
         #### will be up to you and the goals for your app.
