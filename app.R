@@ -180,9 +180,22 @@ ui <- list(
             p("If exchangeability is violated, the estimated treatment effect may be biased, as there could be confounding 
        factors that affect both treatment assignment and the outcome. In this case, alternative approaches such as 
        propensity score matching or instrumental variables may help control for unobserved confounders.")
+          ),
+          
+          br(),
+          
+          box(
+            title = strong("Additional Assumptions"),
+            status = "primary",
+            collapsible = TRUE,
+            collapsed = TRUE,
+            width = '100%',
+            p("In addition to the specific assumptions of the two-period Difference-in-Difference (DID) model, all ordinary least squares (OLS) regression assumptions also apply to DID models."),
+            p("The OLS assumptions include linearity, independence of errors, homoscedasticity, no multicollinearity, and normality of residuals. Ensuring these assumptions hold is crucial for the accuracy of your regression results."),
+            p(HTML("In this app, we assume that these OLS assumptions are held. However, if you'd like to further explore and check these assumptions, visit the 
+    <a href='https://psu-eberly.shinyapps.io/Assumptions/' class='bodylinks'>Regression Assumptions</a> app."))
           )
         ),
-        
       
   
         #### Note: you must have at least one of the following pages. You might
