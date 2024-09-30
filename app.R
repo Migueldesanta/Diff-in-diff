@@ -237,11 +237,12 @@ ui <- list(
           withMathJax(),
           
           h2("Explore Assumptions"),
-          p("This page allows you to explore key assumptions of a Two-Period Difference-in-Difference (DID) model, 
-     specifically focusing on the Parallel Trends assumption. You can use the sliders to adjust the control 
-     and treatment group trend slopes before treatment, as well as the post-treatment effect. The graphs 
-     will automatically update to show how these changes influence the model's results, helping you understand 
-     whether the Parallel Trends assumption holds or is violated in different scenarios."),
+          p("This page allows you to explore key assumptions of a Two-Period 
+            Difference-in-Difference model, specifically focusing on the Parallel 
+            Trends assumption and Exchangeability Assumption. You can use the sliders 
+            to adjust the parameters. The graphs will automatically update to show how 
+            these changes influence the model's results, helping you understand whether 
+            the assumptions hold or are violated in different scenarios. "),
           br(),
           
           # Main content for exploring assumptions
