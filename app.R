@@ -40,8 +40,8 @@ ui <- list(
         id = "pages",
         menuItem("Overview", tabName = "overview", icon = icon("gauge-high")),
         menuItem("Prerequisites", tabName = "prerequisites", icon = icon("book")),
-        menuItem("Explore 1", tabName = "explore1", icon = icon("wpexplorer")),
-        menuItem("Explore 2", tabName = "explore2", icon = icon("wpexplorer")),
+        menuItem("Explore Assumptions", tabName = "explore1", icon = icon("wpexplorer")),
+        menuItem("Explore Interpretations", tabName = "explore2", icon = icon("wpexplorer")),
         menuItem("References", tabName = "references", icon = icon("leanpub"))
       ),
       tags$div(
@@ -64,8 +64,8 @@ ui <- list(
           p("Explore the app based on the following instructions:"),
           tags$ol(
             tags$li("Review any prerequiste ideas using the Prerequistes tab."),
-            tags$li("Explore the assumptions by the Exploration 1 Tab."),
-            tags$li("Explore the interpretations by the Exploration 2 Tab.")
+            tags$li("Explore the assumptions by the Explor Assumptions Tab."),
+            tags$li("Explore the interpretations by the Explor Interpretations Tab.")
           ),
           ##### Go Button--location will depend on your goals
           div(
@@ -135,6 +135,36 @@ ui <- list(
     & \\ \\ \\ \\text{ — how much more (or less) the treatment group changes compared to the control group after the intervention}. \\\\
     &\\bullet \\ \\epsilon_{it} \\text{ is the error term, capturing unobserved factors that may affect the outcome}.
     \\end{aligned}$$')
+          ),
+          
+          br(),
+          
+          box(
+            title = strong("Causal Inference Concepts"), 
+            status = "primary", 
+            collapsible = TRUE,
+            collapsed = TRUE,
+            width = '100%',
+            HTML("<strong>1. Correlation vs. Causation:</strong> 
+        <p>Correlation indicates a relationship between two variables, but it does not mean one causes the other. Causation, however, implies that one event leads directly to another. Causal inference aims to establish this cause-and-effect relationship.</p>
+        
+        <strong>2. Counterfactuals:</strong> 
+        <p>Counterfactuals ask what would have happened if the treatment had not occurred. In causal inference, we try to estimate the unobserved outcome for individuals who were treated.</p>
+        
+        <strong>3. Potential Outcomes Framework:</strong> 
+        <p>This framework models two potential outcomes: one if the individual is treated and one if not treated. The causal effect is the difference between these two outcomes, but only one is observed, so we estimate the average effect.</p>
+        
+        <strong>4. Randomized Controlled Trials (RCTs):</strong> 
+        <p>RCTs randomly assign treatment, ensuring that groups are comparable. This minimizes bias and makes it easier to infer causality, making RCTs the gold standard for causal inference.</p>
+        
+        <strong>5. Confounding Variables:</strong> 
+        <p>Confounders influence both the treatment and the outcome, potentially biasing results. Accounting for confounders is critical for estimating the true causal effect.</p>
+        
+        <strong>6. Assumptions for Causal Inference:</strong> 
+        <p>Causal inference relies on assumptions like no unmeasured confounding, consistency (the observed outcome matches the potential outcome under treatment), and SUTVA (no interference between units).</p>
+        
+        <strong>7. Estimation of Causal Effects:</strong> 
+        <p>We estimate treatment effects such as the Average Treatment Effect (ATE) for the whole population or the Average Treatment Effect on the Treated (ATT) for those who actually received treatment. Heterogeneous effects capture variations across subgroups.</p>")
           ),
           
           br(),
