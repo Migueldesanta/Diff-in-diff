@@ -71,11 +71,11 @@ ui <- list(
           div(
             style = "text-align: center;",
             bsButton(
-              inputId = "go1",
-              label = "GO!",
-              size = "large",
-              icon = icon("bolt"),
-              style = "default"
+              inputId = "go",
+              label = "Prerequisites",
+              icon = icon("book"),
+              style = "default",
+              size = "large"
             )
           ),
           ##### Create two lines of space
@@ -234,7 +234,7 @@ ui <- list(
                     # Sliders for trend adjustment
                     sliderInput(
                       inputId = "trend_control",
-                      label = "Control Group Trend Slope (Pre-Treatment):",
+                      label = "Control Group Trend Slope (Pre Intervention):",
                       min = 0.5,
                       max = 3,
                       value = 1.5,
@@ -242,7 +242,7 @@ ui <- list(
                     ),
                     sliderInput(
                       inputId = "trend_treatment",
-                      label = "Treatment Group Trend Slope (Pre-Treatment):",
+                      label = "Treatment Group Trend Slope (Pre Intervention):",
                       min = 0.5,
                       max = 3,
                       value = 1.5,
@@ -250,7 +250,7 @@ ui <- list(
                     ),
                     sliderInput(
                       inputId = "treatment_effect",
-                      label = "Treatment Effect (Post-Treatment):",
+                      label = "Treatment Effect (Post Intervention):",
                       min = 0,
                       max = 5,
                       value = 2,
@@ -278,14 +278,11 @@ ui <- list(
                   width = 4,
                   wellPanel(
                     tags$strong("Exchangeability Assumption"),
-                    p("This assumption requires that treatment and control groups follow the same trend before treatment. 
-         You can adjust the initial outcome differences between the groups and add a confounder to see 
-         how this affects the model."),
                     
                     # Slider for initial outcome differences (baseline difference)
                     sliderInput(
                       inputId = "initial_diff",
-                      label = "Initial Outcome Difference Between Groups (Pre-Treatment):",
+                      label = "Initial Outcome Difference Between Groups (Pre Intervention):",
                       min = -5,
                       max = 5,
                       value = 0,
@@ -330,25 +327,6 @@ ui <- list(
           p("What this page looks like will be up to you. Something you might
             consider is to re-create the tools of the Exploration page and then
             a list of questions for the user to then answer.")
-        ),
-        #### Set up a Game Page ----
-        tabItem(
-          tabName = "game",
-          withMathJax(),
-          h2("Practice/Test Yourself with [Type of Game]"),
-          p("On this type of page, you'll set up a game for the user to play.
-            Game types include Tic-Tac-Toe, Matching, and a version Hangman to
-            name a few. If you have ideas for new game type, please let us know.")
-        ),
-        #### Set up a Wizard Page ----
-        tabItem(
-          tabName = "wizard",
-          withMathJax(),
-          h2("Wizard"),
-          p("This page will have a series of inputs and questions for the user to
-            answer/work through in order to have the app create something. These
-            types of Activity pages are currently rare as we try to avoid
-            creating 'calculators' in the BOAST project.")
         ),
         #### Set up the References Page ----
         tabItem(
@@ -397,6 +375,16 @@ server <- function(input, output, session) {
     )
   })
   
+  ####button###
+  observeEvent(
+    eventExpr = input$go,
+    handlerExpr = {
+      updateTabItems(
+        session = session,
+        inputId = "pages",
+        selected = "prerequisites")
+    })
+  
   # Generate data for Parallel Trends Assumption
   generate_data <- reactive({
     years <- 1959:1969  # Simulated years
@@ -427,15 +415,11 @@ server <- function(input, output, session) {
     # Combine pre and post treatment values
     treatment_values <- c(treatment_values_pre, treatment_values_post)
     
-    # No Treatment Effect trend (i.e., treatment group with no effect applied)
-    no_treatment_effect_values <- treatment_pre + control_slope * (years - min(years))  # No treatment effect trend (parallel to control group)
-    
     # Combine all data into a data frame
     data.frame(
-      year = rep(years, 3),
-      outcome = c(control_values, treatment_values, no_treatment_effect_values),
-      group = factor(rep(c("Control Group", "Treatment Group", "No Treatment Effect"), each = length(years))),
-      type = factor(rep(c("Control", "Treatment", "No Treatment Effect"), each = length(years)))
+      year = rep(years, 2),
+      outcome = c(control_values, treatment_values),
+      group = factor(rep(c("Control Group", "Treatment Group"), each = length(years)))
     )
   })
   
@@ -445,45 +429,53 @@ server <- function(input, output, session) {
     intervention_year <- 1964  # The year of intervention
     
     # Plot using ggplot2
-    ggplot(data, aes(x = year, y = outcome, color = group, linetype = type)) +
+    ggplot(data, aes(x = year, y = outcome, color = group)) +
       geom_line(size = 1.2) +
-      geom_vline(xintercept = intervention_year, color = "red", size = 1) +
-      labs(title = "Explore Parallel Trends Assumption with Treatment Effect", x = "Year", y = "Outcome") +
+      geom_vline(aes(xintercept = intervention_year, linetype = "Intervention"), color = "black", size = 1) +  
+      labs(title = "Parallel Trends Assumption", x = "Year", y = "Outcome", linetype = "") +
       theme_minimal() +
       
-      # Customize x-axis labels to show "Pre intervention" and "Post intervention"
-      scale_x_continuous(breaks = c(1959, intervention_year, 1969), labels = c("Pre intervention", "Intervention", "Post intervention")) +
+      # Customize the color for Control and Treatment groups
+      scale_color_manual(values = c("Control Group" = "blue", "Treatment Group" = "red")) +
       
-      # Customize line types for control, treatment, and ideal trends
-      scale_linetype_manual(values = c("Control" = "solid", "Treatment" = "solid", "No Treatment Effect" = "dashed")) +
+      # Include the intervention line in the legend
+      scale_linetype_manual(values = c("Intervention" = "solid")) +
       
-      # Only include the three legend items (Control, Treatment, No Treatment Effect)
-      scale_color_manual(values = c("Control Group" = "blue", 
-                                    "Treatment Group" = "brown", 
-                                    "No Treatment Effect" = "grey")) +
-      
-      # Customize the legend to appear at the bottom without a title
-      theme(legend.position = "bottom", legend.title = element_blank())
+      # Make all text elements bold and increase size
+      theme(
+        axis.text.x = element_blank(),  # Hide x-axis numbers
+        axis.ticks.x = element_blank(),  # Hide x-axis ticks
+        legend.position = "bottom", 
+        legend.title = element_blank(),
+        axis.title.x = element_text(size = 20, face = "bold"),
+        axis.title.y = element_text(size = 20, face = "bold"),
+        axis.text = element_text(size = 16, face = "bold"),
+        legend.text = element_text(size = 16, face = "bold"),
+        plot.title = element_text(size = 22, face = "bold")
+      )
   })
   
-  # Assumption Check ----
-  output$assumptionCheck <- renderPrint({
+  # Assumption Check for Parallel Trends
+  output$assumptionCheck <- renderUI({
     if (input$trend_control == input$trend_treatment) {
-      cat("Assumption Satisfied: The control and treatment 
-          groups have parallel trends before the intervention, 
-          meaning the assumption holds.")
+      HTML("<p style='font-size:18px; font-weight:bold;'>Assumption Satisfied: The control and treatment groups have parallel trends before the intervention, meaning the assumption holds.</p>")
     } else {
-      cat("Assumption Violated: The control and treatment groups 
-          do not follow parallel trends before the intervention, 
-          meaning the assumption is violated.")
+      HTML("<p style='font-size:18px; font-weight:bold;'>Assumption Violated: The control and treatment groups do not follow parallel trends before the intervention, meaning the assumption is violated.</p>")
     }
   })
-  # --- Exchangeability Assumption Logic (New) ---
+  
+  # Assumption Check for Exchangeability
+  output$exchangeabilityCheck <- renderUI({
+    if (input$confounder == 0) {
+      HTML("<p style='font-size:18px; font-weight:bold;'>Exchangeability Assumption holds: No systematic differences between treatment and control groups.</p>")
+    } else {
+      HTML("<p style='font-size:18px; font-weight:bold;'>Exchangeability Assumption violated: Systematic differences between treatment and control groups exist.</p>")
+    }
+  })
   
   # Generate data for Exchangeability Assumption
   generate_exchangeability_data <- reactive({
     years <- 1959:1969
-    intervention_year <- 1964
     control_pre <- 8  # Baseline for control group
     
     # Apply user's input for initial difference and confounding effect
@@ -506,41 +498,50 @@ server <- function(input, output, session) {
     data.frame(
       year = rep(years, 2),
       outcome = c(control_values, treatment_values),
-      group = factor(rep(c("Control", "Treatment"), each = length(years)))
+      group = factor(rep(c("Control Group", "Treatment Group"), each = length(years)))
     )
   })
   
   # Plot for Exchangeability Assumption (Line Plot)
   output$plotExchangeability <- renderPlot({
     data <- generate_exchangeability_data()
+    intervention_year <- max(data$year)  # The intervention year is set to the last year
     
     ggplot(data, aes(x = year, y = outcome, color = group)) +
       geom_line(size = 1.2) +  # Using line plot to show trends
-      labs(title = "Exchangeability Assumption (Line Plot)", x = "Year", y = "Outcome") +
+      
+      # Add the vertical line at the far right representing intervention, and give it a label in the legend
+      geom_vline(aes(xintercept = intervention_year, linetype = "Intervention"), color = "black", size = 1) +  
+      
+      # Set the labels for title, x, and y axes
+      labs(title = "Exchangeability Assumption", x = "Year", y = "Outcome", linetype = "") +
       theme_minimal() +
-      scale_color_manual(values = c("Control" = "blue", "Treatment" = "red")) +
-      theme(legend.position = "bottom", legend.title = element_blank())
-  })
-  
-  # Analysis for Exchangeability Assumption
-  output$analysis2 <- renderDataTable({
-    data <- generate_exchangeability_data()
-    
-    # Display the generated data for analysis
-    datatable(data, options = list(pageLength = 5))
-  })
-  
-  # Assumption Check for Exchangeability
-  output$exchangeabilityCheck <- renderPrint({
-    if (input$confounder == 0) {
-      cat("Exchangeability Assumption holds: No systematic differences between treatment and control groups.")
-    } else {
-      cat("Exchangeability Assumption violated: Systematic differences between treatment and control groups exist.")
-    }
+      
+      # Customize the color for Control and Treatment groups
+      scale_color_manual(values = c("Control Group" = "blue", "Treatment Group" = "red")) +
+      
+      # Include the intervention line in the legend
+      scale_linetype_manual(values = c("Intervention" = "solid")) +
+      
+      # Remove x-axis numeric labels and ticks
+      theme(
+        axis.text.x = element_blank(),  # Hide x-axis text (numbers)
+        axis.ticks.x = element_blank(),  # Hide x-axis ticks
+        legend.position = "bottom", 
+        legend.title = element_blank(),
+        
+        # Make all text elements bold and increase size
+        axis.title.x = element_text(size = 20, face = "bold"),
+        axis.title.y = element_text(size = 20, face = "bold"),
+        axis.text = element_text(size = 16, face = "bold"),
+        legend.text = element_text(size = 16, face = "bold"),
+        plot.title = element_text(size = 22, face = "bold")
+      )
   })
   
   
 }
+
 
 # Run the application using boastApp ----
 boastUtils::boastApp(ui = ui, server = server)
