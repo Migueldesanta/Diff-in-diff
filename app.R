@@ -294,7 +294,6 @@ ui <- list(
                 column(
                   width = 8,
                   plotOutput("didPlot", height = "400px"),
-                  tags$b(dataTableOutput('analysis1')),
                   br(),
                   uiOutput('assumptionCheck')
                 )
@@ -336,8 +335,6 @@ ui <- list(
                 column(
                   width = 8,
                   plotOutput("plotExchangeability", height = "400px"),
-                  br(),
-                  tags$b(dataTableOutput('analysis2')),
                   br(),
                   uiOutput("exchangeabilityCheck")
                 )
