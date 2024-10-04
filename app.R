@@ -133,7 +133,7 @@ ui <- list(
   ")
           ),
           
-         
+          
           
           # Box for Estimator
           box(
@@ -175,13 +175,13 @@ ui <- list(
         <strong>3. Potential Outcomes Framework:</strong> 
         <p>This framework models two potential outcomes: one if the individual is treated and one if not treated. The causal effect is the difference between these two outcomes, but only one is observed, so we estimate the average effect.</p>
         
-        <strong>5. Confounding Variables:</strong> 
+        <strong>4. Confounding Variables:</strong> 
         <p>Confounders influence both the treatment and the outcome, potentially biasing results. Accounting for confounders is critical for estimating the true causal effect.</p>
         
-        <strong>6. Assumptions for Causal Inference:</strong> 
+        <strong>5. Assumptions for Causal Inference:</strong> 
         <p>Causal inference relies on assumptions like no unmeasured confounding, consistency (the observed outcome matches the potential outcome under treatment), and SUTVA (no interference between units).</p>
         
-        <strong>7. Estimation of Causal Effects:</strong> 
+        <strong>6. Estimation of Causal Effects:</strong> 
         <p>We estimate treatment effects such as the Average Treatment Effect (ATE) for the whole population or the Average Treatment Effect on the Treated (ATT) for those who actually received treatment. Heterogeneous effects capture variations across subgroups.In this case we use ATT.
                  </p>")
           ),
@@ -231,7 +231,7 @@ ui <- list(
        factors that affect both treatment assignment and the outcome. ")
           ),
           
-        
+          
           
           box(
             title = strong("Additional Assumptions"),
@@ -245,8 +245,8 @@ ui <- list(
     <a href='https://psu-eberly.shinyapps.io/Assumptions/' class='bodylinks'>Regression Assumptions</a> app."))
           )
         ),
-      
-  
+        
+        
         #### Note: you must have at least one of the following pages. You might
         #### have more than one type and/or more than one of the same type. This
         #### will be up to you and the goals for your app.
@@ -600,3 +600,4 @@ server <- function(input, output, session) {
 
 # Run the application using boastApp ----
 boastUtils::boastApp(ui = ui, server = server)
+
